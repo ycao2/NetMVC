@@ -21,26 +21,62 @@ namespace MVCDemo.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create()
+        [ActionName("Create")]
+        public ActionResult Create_Get()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(string name, string gender, string city, DateTime dateOfBirth)
+        [ActionName("Create")]
+        public ActionResult Create_Post(Employee employee)
         {
-            Employee employee = new Employee();
-            // Retrieve form data using form collection
-            employee.Name = name;
-            employee.Gender = gender;
-            employee.City = city;
-            employee.DateOfBirth = dateOfBirth;
+            //Employee employee = new Employee();
+            //TryUpdateModel(employee);
 
-            EmployeeBusinessLayer employeeBusinessLayer = new EmployeeBusinessLayer();
-            employeeBusinessLayer.AddEmployee(employee);
+            if (ModelState.IsValid)
+            {
 
-            return RedirectToAction("Index");
+                EmployeeBusinessLayer employeeBusinessLayer = new EmployeeBusinessLayer();
+                employeeBusinessLayer.AddEmployee(employee);
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
         }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            EmployeeBusinessLayer employeeBusinessLayer =
+                   new EmployeeBusinessLayer();
+            Employee employee =
+                   employeeBusinessLayer.Employees.Single(emp => emp.ID == id);
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        public ActionResult Edit_Post(int id)
+        {
+            EmployeeBusinessLayer employeeBusinessLayer =
+                          new EmployeeBusinessLayer();
+            Employee employee = employeeBusinessLayer.Employees.Single(emp => emp.ID == id);
+            UpdateModel(employee,null, null, new string[] {"Name"});
+
+            if (ModelState.IsValid)
+            {
+                
+                employeeBusinessLayer.SaveEmmployee(employee);
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
 
     }
 }

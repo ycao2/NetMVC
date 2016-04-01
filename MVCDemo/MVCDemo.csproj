@@ -131,9 +131,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App_Data\Employee.mdf" />
+    <Content Include="App_Data\Employee.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\Employee_log.ldf">
       <DependentUpon>Employee.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -162,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Employee\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Employee\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
